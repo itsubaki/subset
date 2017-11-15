@@ -11,22 +11,20 @@ func TestSubset(t *testing.T) {
 	clientSize := 300
 	subsetSize := 30
 
-	backends := []*Backend{}
+	backends := []Backend{}
 	for i := 0; i < backendSize; i++ {
-		backends = append(backends, &Backend{i})
+		backends = append(backends, Backend{i})
 	}
 
-	subset := NewSubset(backends, subsetSize)
-
-	selected := []*Backend{}
+	selected := []Backend{}
 	for i := 0; i < clientSize; i++ {
-		s := subset.Select(i)
+		s := Subset(backends, i, subsetSize)
+		selected = append(selected, s...)
+
 		for _, b := range s {
 			fmt.Print(b)
 		}
 		fmt.Println()
-
-		selected = append(selected, s...)
 	}
 
 	stats := make(map[int]int)
