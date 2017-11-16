@@ -4,10 +4,6 @@ import (
 	"math/rand"
 )
 
-type Backend struct {
-	ID int
-}
-
 func Subset(backends []Backend, clientID int, subsetSize int) []Backend {
 	subsetCount := len(backends) / subsetSize
 

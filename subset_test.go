@@ -12,7 +12,7 @@ func TestSubset(t *testing.T) {
 
 	backends := []Backend{}
 	for i := 0; i < backendSize; i++ {
-		backends = append(backends, Backend{i})
+		backends = append(backends, Backend{ID: i})
 	}
 
 	selected := [][]Backend{}
