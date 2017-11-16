@@ -2,7 +2,6 @@ package subset
 
 import (
 	"fmt"
-	"sort"
 	"testing"
 )
 
@@ -16,29 +15,29 @@ func TestSubset(t *testing.T) {
 		backends = append(backends, Backend{i})
 	}
 
-	selected := []Backend{}
+	selected := [][]Backend{}
 	for i := 0; i < clientSize; i++ {
 		s := Subset(backends, i, subsetSize)
-		selected = append(selected, s...)
+		selected = append(selected, s)
 
-		for _, b := range s {
-			fmt.Print(b)
-		}
-		fmt.Println()
+		fmt.Println(s)
+	}
+
+	// count by backendID
+	flat := []Backend{}
+	for _, b := range selected {
+		flat = append(flat, b...)
 	}
 
 	stats := make(map[int]int)
-	for _, backend := range selected {
+	for _, backend := range flat {
 		stats[backend.ID] = stats[backend.ID] + 1
 	}
 
-	ids := []int{}
-	for k, _ := range stats {
-		ids = append(ids, k)
-	}
-	sort.Ints(ids)
-
-	for _, id := range ids {
-		fmt.Printf("%-3d %d\n", id, stats[id])
+	for _, count := range stats {
+		if count == 30 {
+			continue
+		}
+		t.Error(stats)
 	}
 }
