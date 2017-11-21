@@ -2,6 +2,7 @@ package subset
 
 import (
 	"fmt"
+	"reflect"
 	"testing"
 )
 
@@ -15,12 +16,30 @@ func TestSubset(t *testing.T) {
 		backends = append(backends, Backend{ID: i})
 	}
 
-	selected := [][]Backend{}
+	clients := []Client{}
 	for i := 0; i < clientSize; i++ {
-		s := Subset(backends, i, subsetSize)
-		selected = append(selected, s)
+		clients = append(clients, Client{ID: i})
+	}
 
-		fmt.Println(s)
+	selected := [][]Backend{}
+	for _, c := range clients {
+		s := Subset(backends, c.ID, subsetSize)
+		selected = append(selected, s)
+	}
+
+	// check dup
+	for i := 0; i < len(selected); i++ {
+		for j := 0; j < len(selected); j++ {
+			if i == j {
+				continue
+			}
+
+			if reflect.DeepEqual(selected[i], selected[j]) {
+				fmt.Println(selected[i])
+				fmt.Println(selected[j])
+				t.Error(selected)
+			}
+		}
 	}
 
 	// count by backendID
