@@ -1,6 +1,6 @@
 package subset
 
 type Backend struct {
-	ID   int
-	Wait int
+	ID     int
+	Weight int
 }
