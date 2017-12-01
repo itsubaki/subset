@@ -53,10 +53,10 @@ func TestSubset(t *testing.T) {
 		stats[backend.ID] = stats[backend.ID] + 1
 	}
 
-	for _, count := range stats {
+	for i, count := range stats {
 		if count == 30 {
 			continue
 		}
-		t.Error(stats)
+		t.Error(stats[i])
 	}
 }

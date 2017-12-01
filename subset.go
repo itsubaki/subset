@@ -21,7 +21,7 @@ func Shuffle(backends []Backend, round int) []Backend {
 	shuffled := make([]Backend, len(backends))
 	copy(shuffled, backends)
 
-	for i := len(shuffled) - 1; i >= 0; i-- {
+	for i := 0; i < len(shuffled); i++ {
 		j := rand.Intn(i + 1)
 		shuffled[i], shuffled[j] = shuffled[j], shuffled[i]
 	}
