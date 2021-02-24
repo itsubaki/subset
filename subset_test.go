@@ -1,62 +1,42 @@
-package subset
+package subset_test
 
 import (
 	"fmt"
-	"reflect"
-	"testing"
+
+	"github.com/itsubaki/subset"
 )
 
-func TestSubset(t *testing.T) {
-	backendSize := 300
-	clientSize := 300
-	subsetSize := 30
+func Example() {
+	backendSize := 100
+	clientSize := 10
+	subsetSize := 10
 
-	backends := []Backend{}
-	for i := 0; i < backendSize; i++ {
-		backends = append(backends, Backend{ID: i})
-	}
-
-	clients := []Client{}
-	for i := 0; i < clientSize; i++ {
-		clients = append(clients, Client{ID: i})
-	}
-
-	selected := [][]Backend{}
-	for _, c := range clients {
-		s := Subset(backends, c.ID, subsetSize)
-		selected = append(selected, s)
-	}
-
-	// check dup
-	for i := 0; i < len(selected); i++ {
-		for j := 0; j < len(selected); j++ {
-			if i == j {
-				continue
-			}
-
-			if reflect.DeepEqual(selected[i], selected[j]) {
-				fmt.Println(selected[i])
-				fmt.Println(selected[j])
-				t.Error(selected)
-			}
+	ids := func(size int) []int {
+		ids := make([]int, 0)
+		for i := 0; i < size; i++ {
+			ids = append(ids, i)
 		}
+
+		return ids
 	}
 
-	// count by backendID
-	flat := []Backend{}
-	for _, b := range selected {
-		flat = append(flat, b...)
+	clientIDs := ids(clientSize)
+	backendIDs := ids(backendSize)
+
+	for _, clientID := range clientIDs {
+		s := subset.Select(backendIDs, clientID, subsetSize)
+		fmt.Printf("ClientID: %v -> BackendIDs: %2v\n", clientID, s)
 	}
 
-	stats := make(map[int]int)
-	for _, backend := range flat {
-		stats[backend.ID] = stats[backend.ID] + 1
-	}
-
-	for i, count := range stats {
-		if count == 30 {
-			continue
-		}
-		t.Error(stats[i])
-	}
+	// Output:
+	// ClientID: 0 -> BackendIDs: [40 35 50 66 44 88  1 52 67 56]
+	// ClientID: 1 -> BackendIDs: [21 72 23 34 86 11 42 20 17 64]
+	// ClientID: 2 -> BackendIDs: [27 58 43 46 47 45 87 49 74 30]
+	// ClientID: 3 -> BackendIDs: [71 83 25 75 39 78 37 70 33 10]
+	// ClientID: 4 -> BackendIDs: [91 99  6 79 59 18 53 76 98  3]
+	// ClientID: 5 -> BackendIDs: [57 69 84 14  4 16 54 38 81 36]
+	// ClientID: 6 -> BackendIDs: [89 29 32 80 48 60 95 13 92 24]
+	// ClientID: 7 -> BackendIDs: [31 73 65 90 51 62 77 85 28 61]
+	// ClientID: 8 -> BackendIDs: [ 9 63 93 26 55  2 68  5  7 12]
+	// ClientID: 9 -> BackendIDs: [41 96 82 94 19  0 22 15 97  8]
 }
