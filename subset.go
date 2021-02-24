@@ -1,8 +1,6 @@
 package subset
 
-import (
-	"math/rand"
-)
+import "math/rand"
 
 func Select(backendIDs []int, clientID int, subsetSize int) []int {
 	subsetCount := len(backendIDs) / subsetSize
