@@ -11,7 +11,7 @@ func Example() {
 	clientSize := 10
 	subsetSize := 10
 
-	ids := func(size int) []int {
+	gen := func(size int) []int {
 		ids := make([]int, 0)
 		for i := 0; i < size; i++ {
 			ids = append(ids, i)
@@ -20,12 +20,13 @@ func Example() {
 		return ids
 	}
 
-	clientIDs := ids(clientSize)
-	backendIDs := ids(backendSize)
+	clientIDs := gen(clientSize)
+	backendIDs := gen(backendSize)
 
-	for _, clientID := range clientIDs {
-		s := subset.Select(backendIDs, clientID, subsetSize)
-		fmt.Printf("ClientID: %v -> BackendIDs: %2v\n", clientID, s)
+	ss := subset.New(backendIDs, subsetSize)
+	for _, id := range clientIDs {
+		s := ss.Select(id)
+		fmt.Printf("ClientID: %v -> BackendIDs: %2v\n", id, s)
 	}
 
 	// Output:
