@@ -3,38 +3,36 @@ package subset
 import "math/rand"
 
 type Subset struct {
-	ids  []int
-	size int
+	ids   []int
+	size  int
+	count int
 }
 
 func New(ids []int, size int) *Subset {
 	return &Subset{
-		ids:  ids,
-		size: size,
+		ids:   ids,
+		size:  size,
+		count: len(ids) / size,
 	}
 }
 
 func (s *Subset) Select(id int) []int {
-	subsetCount := len(s.ids) / s.size
+	round := id / s.count
+	shuffled := s.Shuffle(round)
 
-	round := id / subsetCount
-	rand.Seed(int64(round))
-	shuffled := Shuffle(s.ids, round)
-
-	subsetID := id % subsetCount
-	start := subsetID * s.size
-
+	start := (id % s.count) * s.size
 	return shuffled[start : start+s.size]
 }
 
-func Shuffle(ids []int, round int) []int {
-	shuffled := make([]int, len(ids))
-	copy(shuffled, ids)
+func (s *Subset) Shuffle(round int) []int {
+	out := make([]int, len(s.ids))
+	copy(out, s.ids)
 
-	for i := 0; i < len(shuffled); i++ {
+	rand.Seed(int64(round))
+	for i := 0; i < len(out); i++ {
 		j := rand.Intn(i + 1)
-		shuffled[i], shuffled[j] = shuffled[j], shuffled[i]
+		out[i], out[j] = out[j], out[i]
 	}
 
-	return shuffled
+	return out
 }
