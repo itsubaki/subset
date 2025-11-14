@@ -1,6 +1,9 @@
 package subset
 
-import "math/rand"
+import (
+	"math/rand/v2"
+	"slices"
+)
 
 type Subset struct {
 	ids   []int
@@ -25,12 +28,11 @@ func (s *Subset) Select(id int) []int {
 }
 
 func (s *Subset) Shuffle(round int) []int {
-	out := make([]int, len(s.ids))
-	copy(out, s.ids)
+	rnd := rand.New(rand.NewPCG(uint64(round), 0))
 
-	rand.Seed(int64(round))
-	for i := 0; i < len(out); i++ {
-		j := rand.Intn(i + 1)
+	out := slices.Clone(s.ids)
+	for i := range len(out) {
+		j := rnd.IntN(i + 1)
 		out[i], out[j] = out[j], out[i]
 	}
 
