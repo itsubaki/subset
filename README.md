@@ -1,7 +1,7 @@
 # subset
 
- - Fisher–Yates Shuffle
- - "A Subset Selection Algorithm: Deterministic Subsetting"@[Site Reliability Engineering](https://landing.google.com/sre/book.html)
+ - Fisher–Yates shuffle
+ - "A Subset Selection Algorithm: Deterministic Subsetting" in [Site Reliability Engineering](https://landing.google.com/sre/book.html)
 
 ## Example
 
