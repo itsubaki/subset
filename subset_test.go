@@ -17,14 +17,12 @@ func testdatagen(size int) []int {
 
 func Example() {
 	backendSize := 100
-	clientSize := 10
-
-	backendIDs := testdatagen(backendSize)
-	clientIDs := testdatagen(clientSize)
-
 	subsetSize := 10
+	backendIDs := testdatagen(backendSize)
 	s := subset.New(backendIDs, subsetSize)
 
+	clientSize := 10
+	clientIDs := testdatagen(clientSize)
 	for _, clientID := range clientIDs {
 		selected := s.Select(clientID)
 		fmt.Printf("ClientID: %v -> BackendIDs: %2v\n", clientID, selected)
