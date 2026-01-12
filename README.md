@@ -17,8 +17,9 @@ func testdatagen(size int) []int {
 
 func Example() {
 	backendSize := 100
-	subsetSize := 10
 	backendIDs := testdatagen(backendSize)
+
+	subsetSize := 10
 	s := subset.New(backendIDs, subsetSize)
 
 	clientSize := 10
